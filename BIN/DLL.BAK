@@ -1,0 +1,132 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<conio.h>
+void insert();
+void deletion();
+void display();
+void find();
+typedef struct node *position;
+position newnode,temp,L=NULL,P;
+struct node{
+int data;
+position next;
+position prev;
+};
+
+
+void main(){
+int choice;
+clrscr();
+do{
+printf("\n1.INSERT\n2.DELETE\n3.DISPLAY\n4.FIND\n5.EXIT");
+printf("\nEnter ur option");
+scanf("%d",&choice);
+switch(choice){
+case 1:
+insert();
+break;
+case 2:
+deletion();
+break;
+case 3:
+display();
+break;
+case 4:
+find();
+break;
+case 5:
+exit(0);
+}
+}while(choice!=5);
+getch();
+}
+
+void insert(){
+int pos,i;
+newnode=(struct node*)malloc(sizeof(struct node));
+printf("\nEnter the data to be inserted");
+scanf("%d",&newnode->data);
+if(L==NULL){
+	L=newnode;
+	L->next=NULL;
+	L->prev=NULL;
+}
+else{
+	printf("\nEnter the position where the data is to be inserted");
+	scanf("%d",&pos);
+	if(pos==1){
+		newnode->next=L;
+		newnode->prev=NULL;
+		L->prev=newnode;
+		L=newnode;
+	}
+	else{
+		P=L;
+		for(i=1;i<pos-1&&P->next!=NULL;i++){
+			P=P->next;
+		}
+		newnode->next=P->next;
+		P->next=newnode;
+		newnode->prev=P;
+		P->next->prev=newnode;
+	}
+}
+}
+
+void deletion(){
+int pos,i;
+if(L==NULL)
+printf("\nThe list is empty");
+else{
+printf("\nEnter the position of the data to be deleted");
+scanf("%d",&pos);
+if(pos==1){
+temp=L;
+L=temp->next;
+L->prev=NULL;
+printf("\nThe deleted element is %d",temp->data);
+free(temp);
+}
+else{
+P=L;
+for(i=1;i<pos-1;i++)
+P=P->next;
+temp=P->next;
+printf("\nThe deleted element is %d",temp->data);
+P->next=temp->next;
+temp->next->prev=P;
+free(temp);
+}
+}
+}
+
+void display(){
+if(L==NULL)
+printf("\nNo of elements in the list");
+else{
+printf("\nThe elements in the listare\n");
+for(P=L;P!=NULL;P=P->next)
+printf("%d",P->data);
+}
+}
+
+void find(){
+int a,flag=0,count=0;
+if(L==NULL)
+printf("\nThe list is empty");
+else{
+printf("\nEnter the elements to be searched");
+scanf("%d",&a);
+for(P=L;P!=NULL;P=P->next){
+count++;
+if(P->data==a){
+flag=1;
+printf("\nThe element is found");
+printf("\nThe position is %d",count);
+break;
+}
+}
+if(flag==0)
+printf("\nThe element is not found");
+}
+}
